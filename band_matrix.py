@@ -39,10 +39,26 @@ class BandMatrix:
         return self._matrix[i][self.lower_bandwidth + j - i]
 
     def set(self, i, j, new_val):
-        self._matrix[i][self.lower_bandwidth + j - i] = new_val
+        print(i, j)
+        if not self._valid_position(i, j):
+            raise ValueError('Position ({}, {}) is not a valid position'.format(i, j))
+        if(self.lower_bandwidth + j - i) < 0 or (self.lower_bandwidth + j - i) >= len(self._matrix[0]) or i >= len(self._matrix):
+            if new_val != 0:
+                raise ValueError()
+        else:
+            self._matrix[i][self.lower_bandwidth + j - i] = new_val
 
-    def swap_lines(self, i1, i2):
+    def swap_lines(self, l1, l2):
         if(l1 != l2 and l1 < len(self._matrix) and l1 >=0 and l2 < len(self._matrix) and l2 >=0):
             aux = self._matrix[l1]
             self._matrix[l1] = self._matrix[l2]
             self._matrix[l2] = aux
+
+    def to_normal(self):
+        m = []
+        for i in range(self.dimension_x):
+            m.append([0]*self.dimension_x)
+        for i in range(self.dimension_x):
+            for j in range(self.dimension_y):
+                m[i][j] = self.get(i, j)
+        return m
