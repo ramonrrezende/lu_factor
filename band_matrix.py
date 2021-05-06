@@ -2,16 +2,24 @@
 
 class BandMatrix:
 
-    def __init__(self, dimension_x, dimension_y, lower_bandwidth, superior_bandwidth, matrix):
+    def __init__(self, dimension_x, dimension_y, lower_bandwidth, superior_bandwidth, matrix=None):
         self.dimension_x = dimension_x
         self.dimension_y = dimension_y
         self.lower_bandwidth = lower_bandwidth
         self.superior_bandwidth = superior_bandwidth
         self.width = lower_bandwidth + superior_bandwidth + 1
-        self._matrix = [[0]*self.width for i in range(self.dimension_y)]
+        if not matrix:
+            self._matrix = [[0]*self.width for i in range(self.dimension_y)]
+        else:
+            self._matrix = matrix
 
     def print(self):
         for line in self._matrix:
+            print("|{}|".format("\t".join(list(map(lambda item: "{:6.2f}".format(item), line)))))
+    
+    def print_complete_matrix(self):
+        for i in range(0, self.dimension_x):
+            line = self.get_line(i)
             print("|{}|".format("\t".join(list(map(lambda item: "{:6.2f}".format(item), line)))))
 
     def convert(self, normal_matrix):
@@ -42,6 +50,26 @@ class BandMatrix:
         if(self.lower_bandwidth + j - i) < 0 or (self.lower_bandwidth + j - i) >= len(self._matrix[0]) or i >= len(self._matrix):
             return
         self._matrix[i][self.lower_bandwidth + j - i] = new_val
+    
+    def get_line(self, n, aux=None):
+        if aux is None:
+            aux = self.dimension_y-1
+            self.get_line(n, aux)
+        
+        if aux == -1:
+            return []
+        
+        return self.get_line(n, aux-1) + [self.get(n, aux)]
+
+    def get_col(self, n, aux=None):
+        if aux is None:
+            aux = self.dimension_y-1
+            self.get_col(n, aux)
+        
+        if aux == -1:
+            return []
+        
+        return self.get_col(n, aux-1) + [self.get(aux, n)]
 
     def swap_lines(self, l1, l2):
         temp = []
