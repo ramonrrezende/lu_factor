@@ -51,10 +51,29 @@ def lu_factor(matrix):
     u = clone_matrix(matrix)
     l = build_zero_matrix(len(matrix))
     for k in range(len(matrix) - 1):
+        # pivoteamento #
+        print('L:')
+        print_matrix(l)
+        print('U:')
+        print_matrix(u)
+        index, maior = find_pivo(u, k)
+        print("Swap line {} with line {}".format(k, index))
+        u = swap_lines(matrix, k, index)
+        l = swap_lines(l, k, index)
+        print('L:')
+        print_matrix(l)
+        print('U:')
+        print_matrix(u)
+        ##
+        print(f"Pivo - {u[k][k]}")
         for j in range(k + 1, len(matrix)):
             l[j][k] = u[j][k]/u[k][k]
             for i in range(k, len(matrix)):
                 u[j][i] = u[j][i] - l[j][k]*u[k][i]
+        print('L:')
+        print_matrix(l)
+        print('U:')
+        print_matrix(u)
     set_diagonal(l)
     return l, u
 
@@ -67,12 +86,6 @@ if __name__ == "__main__":
             [-1,   -1,   -1,   1,    1],
             [-1,   -1,   -1,  -1,    1]
         ]
-
-    m = [
-            [1, 1, 1],
-            [2, 2, 5],
-            [4, 6, 8]
-    ]
 
     m = [
             [ 10,   5,   6,   7,   0,   0,   0,   0,   0,   0,   0,  0],
