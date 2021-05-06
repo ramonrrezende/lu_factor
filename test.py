@@ -20,3 +20,5 @@ m = BandMatrix(12, 12, 2, 3)
 m.convert(normal_matrix)
 m.print()
 print(m.get(3, 4))#49
+print(m.get(1, 1))#20
+print(m.get(3, 4))#29

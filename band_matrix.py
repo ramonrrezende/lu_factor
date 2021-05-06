@@ -2,7 +2,7 @@
 
 class BandMatrix:
 
-    def __init__(self, dimension_x, dimension_y, lower_bandwidth, superior_bandwidth):
+    def __init__(self, dimension_x, dimension_y, lower_bandwidth, superior_bandwidth, matrix):
         self.dimension_x = dimension_x
         self.dimension_y = dimension_y
         self.lower_bandwidth = lower_bandwidth
@@ -39,10 +39,18 @@ class BandMatrix:
         return self._matrix[i][self.lower_bandwidth + j - i]
 
     def set(self, i, j, new_val):
+        if(self.lower_bandwidth + j - i) < 0 or (self.lower_bandwidth + j - i) >= len(self._matrix[0]) or i >= len(self._matrix):
+            return
         self._matrix[i][self.lower_bandwidth + j - i] = new_val
 
-    def swap_lines(self, i1, i2):
-        if(l1 != l2 and l1 < len(self._matrix) and l1 >=0 and l2 < len(self._matrix) and l2 >=0):
-            aux = self._matrix[l1]
-            self._matrix[l1] = self._matrix[l2]
-            self._matrix[l2] = aux
+    def swap_lines(self, l1, l2):
+        temp = []
+        for i in range(0, self.dimension_y):
+            temp.append(self.get(l1, i))
+        
+        for i in range(0, self.dimension_y):
+            self.set(l1, i, self.get(l2, i))
+        
+        for i in range(0, self.dimension_y):
+            self.set(l2, i, temp[i])
+

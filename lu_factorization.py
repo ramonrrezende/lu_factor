@@ -60,11 +60,20 @@ def lu_factor(matrix):
         print("Swap line {} with line {}".format(k, index))
         u = swap_lines(matrix, k, index)
         l = swap_lines(l, k, index)
+        print('L:')
+        print_matrix(l)
+        print('U:')
+        print_matrix(u)
         ##
+        print(f"Pivo - {u[k][k]}")
         for j in range(k + 1, len(matrix)):
             l[j][k] = u[j][k]/u[k][k]
             for i in range(k, len(matrix)):
                 u[j][i] = u[j][i] - l[j][k]*u[k][i]
+        print('L:')
+        print_matrix(l)
+        print('U:')
+        print_matrix(u)
     set_diagonal(l)
     return l, u
 
